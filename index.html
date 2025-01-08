@@ -3,8 +3,10 @@
 <head>
     <title>AR Fashion Viewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ar.js/2.0.8/aframe-ar.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.2.0/aframe.min.js"></script>
+    <!-- Load A-Frame first -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.0/aframe.min.js"></script>
+    <!-- Then load AR.js -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
         .loading-screen {
             position: fixed;
@@ -57,36 +59,37 @@
                 position="0 0 0"
                 scale="0.5 0.5 0.5"
                 rotation="-90 0 0"
-                gltf-model="./model.glb"
-                animation-mixer>
+                gltf-model="./model.glb">
             </a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        const model = document.querySelector('[gltf-model]');
-        const loadingText = document.getElementById('loadingText');
-        const errorMessage = document.getElementById('errorMessage');
+        window.onload = function() {
+            const model = document.querySelector('[gltf-model]');
+            const loadingText = document.getElementById('loadingText');
+            const errorMessage = document.getElementById('errorMessage');
 
-        // Model loaded successfully
-        model.addEventListener('model-loaded', () => {
-            document.getElementById('loadingScreen').style.display = 'none';
-            console.log('Model loaded successfully');
-        });
+            // Model loaded successfully
+            model.addEventListener('model-loaded', () => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                console.log('Model loaded successfully');
+            });
 
-        // Model failed to load
-        model.addEventListener('model-error', (error) => {
-            console.error('Error loading model:', error);
-            loadingText.textContent = 'Error loading model. Please check console.';
-            errorMessage.style.display = 'block';
-            errorMessage.textContent = 'Error loading 3D model. Please check if file path is correct.';
-        });
+            // Model failed to load
+            model.addEventListener('model-error', (error) => {
+                console.error('Error loading model:', error);
+                loadingText.textContent = 'Error loading model. Please check console.';
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Error loading 3D model. Please check if file path is correct.';
+            });
 
-        // Log when marker is found
-        document.querySelector('a-marker').addEventListener('markerFound', () => {
-            console.log('Marker found');
-        });
+            // Log when marker is found
+            document.querySelector('a-marker').addEventListener('markerFound', () => {
+                console.log('Marker found');
+            });
+        };
     </script>
 </body>
 </html>
