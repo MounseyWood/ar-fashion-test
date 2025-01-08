@@ -3,8 +3,8 @@
 <head>
     <title>AR Fashion Viewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://unpkg.com/aframe@1.4.2/dist/aframe-master.min.js"></script>
-    <script src="https://unpkg.com/ar.js@2.3.4/aframe/build/aframe-ar.js"></script>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
         .loading-screen {
             position: fixed;
@@ -37,52 +37,33 @@
         </div>
     </div>
 
-    <a-scene
-        embedded
-        arjs="sourceType: webcam; debugUIEnabled: false;"
-        renderer="logarithmicDepthBuffer: true;"
-        loading-screen="enabled: false"
-        vr-mode-ui="enabled: false">
-        
-        <a-assets>
-            <a-asset-item id="model" src="./model.glb"></a-asset-item>
-        </a-assets>
-
+    <a-scene embedded arjs>
         <a-marker preset="hiro">
             <a-entity
                 position="0 0 0"
                 scale="0.5 0.5 0.5"
                 rotation="-90 0 0"
-                gltf-model="#model">
+                gltf-model="./model.glb">
             </a-entity>
         </a-marker>
-        
         <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        window.onload = function() {
             const model = document.querySelector('[gltf-model]');
             const loadingScreen = document.getElementById('loadingScreen');
-            const loadingText = document.getElementById('loadingText');
 
-            // Hide loading screen when model is loaded
             model.addEventListener('model-loaded', () => {
                 loadingScreen.style.display = 'none';
                 console.log('Model loaded successfully');
             });
 
-            // Show error if model fails to load
             model.addEventListener('model-error', (error) => {
                 console.error('Error loading model:', error);
-                loadingText.textContent = 'Error loading model. Please check console.';
+                document.getElementById('loadingText').textContent = 'Error loading model. Please check console.';
             });
-
-            // Log when marker is found
-            document.querySelector('a-marker').addEventListener('markerFound', () => {
-                console.log('Marker found');
-            });
-        });
+        };
     </script>
 </body>
 </html>
