@@ -25,16 +25,17 @@
 <body>
   <!-- 3D Model Viewer with Lighting Adjustments -->
   <model-viewer 
-    src="./model.glb" 
-    alt="A 3D model" 
-    ar 
-    ar-modes="webxr scene-viewer quick-look" 
-    environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
-    skybox-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
-    shadow-intensity="1"
-    exposure="0.8"
-    auto-rotate 
-    camera-controls>
-  </model-viewer>
+  src="./model.glb" 
+  ios-src="./model.usdz" 
+  alt="A 3D model" 
+  ar 
+  ar-modes="webxr scene-viewer quick-look" 
+  environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
+  skybox-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
+  shadow-intensity="1"
+  exposure="0.8"
+  auto-rotate 
+  camera-controls>
+</model-viewer>
 </body>
 </html>
