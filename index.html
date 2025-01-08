@@ -4,7 +4,7 @@
     <title>AR Fashion Viewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://unpkg.com/ar.js@2.0.8/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://unpkg.com/ar.js@1.7.8/aframe/build/aframe-ar.min.js"></script>
     <style>
         .loading-screen {
             position: fixed;
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+    <a-scene embedded arjs="debugUIEnabled: false;">
         <a-marker preset="hiro">
             <a-entity
                 position="0 0 0"
