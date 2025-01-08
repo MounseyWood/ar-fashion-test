@@ -3,10 +3,8 @@
 <head>
     <title>AR Fashion Viewer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Load A-Frame first -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.0/aframe.min.js"></script>
-    <!-- Then load AR.js -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@2.3.4/aframe/build/aframe-ar.min.js"></script>
     <style>
         .loading-screen {
             position: fixed;
@@ -27,22 +25,10 @@
             margin: 20px;
             font-family: Arial, sans-serif;
         }
-        #errorMessage {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-            z-index: 10000;
-        }
     </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <div id="loadingScreen" class="loading-screen">
+<body style="margin: 0;">
+    <div class="loading-screen" id="loadingScreen">
         <div class="instructions">
             <h2>AR Fashion Viewer</h2>
             <p>1. Allow camera access when prompted</p>
@@ -51,9 +37,12 @@
         </div>
     </div>
 
-    <div id="errorMessage"></div>
-
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <a-scene
+        embedded
+        arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix;"
+        renderer="logarithmicDepthBuffer: true;"
+        vr-mode-ui="enabled: false">
+        
         <a-marker preset="hiro">
             <a-entity
                 position="0 0 0"
@@ -62,34 +51,26 @@
                 gltf-model="./model.glb">
             </a-entity>
         </a-marker>
+        
         <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        window.onload = function() {
+        document.addEventListener("DOMContentLoaded", function() {
             const model = document.querySelector('[gltf-model]');
+            const loadingScreen = document.getElementById('loadingScreen');
             const loadingText = document.getElementById('loadingText');
-            const errorMessage = document.getElementById('errorMessage');
 
-            // Model loaded successfully
             model.addEventListener('model-loaded', () => {
-                document.getElementById('loadingScreen').style.display = 'none';
+                loadingScreen.style.display = 'none';
                 console.log('Model loaded successfully');
             });
 
-            // Model failed to load
             model.addEventListener('model-error', (error) => {
                 console.error('Error loading model:', error);
                 loadingText.textContent = 'Error loading model. Please check console.';
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Error loading 3D model. Please check if file path is correct.';
             });
-
-            // Log when marker is found
-            document.querySelector('a-marker').addEventListener('markerFound', () => {
-                console.log('Marker found');
-            });
-        };
+        });
     </script>
 </body>
 </html>
