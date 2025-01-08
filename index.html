@@ -25,6 +25,18 @@
             margin: 20px;
             font-family: Arial, sans-serif;
         }
+        #errorMessage {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            z-index: 10000;
+        }
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -33,9 +45,11 @@
             <h2>AR Fashion Viewer</h2>
             <p>1. Allow camera access when prompted</p>
             <p>2. Point your camera at the Hiro marker</p>
-            <p>Loading 3D model...</p>
+            <p id="loadingText">Loading 3D model...</p>
         </div>
     </div>
+
+    <div id="errorMessage"></div>
 
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
         <a-marker preset="hiro">
@@ -43,15 +57,35 @@
                 position="0 0 0"
                 scale="0.5 0.5 0.5"
                 rotation="-90 0 0"
-                gltf-model="test3.glb">
+                gltf-model="./model.glb"
+                animation-mixer>
             </a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        document.querySelector('a-entity').addEventListener('model-loaded', () => {
+        const model = document.querySelector('[gltf-model]');
+        const loadingText = document.getElementById('loadingText');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Model loaded successfully
+        model.addEventListener('model-loaded', () => {
             document.getElementById('loadingScreen').style.display = 'none';
+            console.log('Model loaded successfully');
+        });
+
+        // Model failed to load
+        model.addEventListener('model-error', (error) => {
+            console.error('Error loading model:', error);
+            loadingText.textContent = 'Error loading model. Please check console.';
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = 'Error loading 3D model. Please check if file path is correct.';
+        });
+
+        // Log when marker is found
+        document.querySelector('a-marker').addEventListener('markerFound', () => {
+            console.log('Marker found');
         });
     </script>
 </body>
